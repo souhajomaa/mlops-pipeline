@@ -6,6 +6,7 @@ import mlflow
 import mlflow.sklearn
 import joblib
 import os
+import random
 
 # Charger le dataset
 df = pd.read_csv('data/dataset.csv')
@@ -18,13 +19,19 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # MLflow tracking
 mlflow.set_experiment("mlops-pipeline")
 
+
 with mlflow.start_run():
-    # Parametres
-    n_estimators = 100
-    max_depth = 3
+    n_estimators = random.choice([50, 100, 150, 200])#PARAMÈTRES VARIÉS
+    max_depth = random.choice([2, 3, 5, 10, None])  # None = pas de limite
+    
+    print(f"Run avec n_estimators={n_estimators}, max_depth={max_depth}")
 
     # Entrainement
-    model = RandomForestClassifier(n_estimators=n_estimators, max_depth=max_depth, random_state=42)
+    model = RandomForestClassifier(
+        n_estimators=n_estimators, 
+        max_depth=max_depth, 
+        random_state=42
+    )
     model.fit(X_train, y_train)
 
     # Evaluation
@@ -33,14 +40,14 @@ with mlflow.start_run():
 
     # Logger dans MLflow
     mlflow.log_param("n_estimators", n_estimators)
-    mlflow.log_param("max_depth", max_depth)
+    mlflow.log_param("max_depth", str(max_depth))  # None → "None"
     mlflow.log_metric("accuracy", accuracy)
     mlflow.sklearn.log_model(model, "model")
 
     print(f"Accuracy: {accuracy:.4f}")
     print(f"Run ID: {mlflow.active_run().info.run_id}")
 
-    # Sauvegarder le modele
+    # Sauvegarder le modèle
     os.makedirs('models', exist_ok=True)
     joblib.dump(model, 'models/model.pkl')
-    print("Modele sauvegarde dans models/model.pkl")
+    print("Modèle sauvegardé dans models/model.pkl")
