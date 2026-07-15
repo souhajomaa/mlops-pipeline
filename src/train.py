@@ -3,7 +3,7 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import mlflow
-import mlflow.sklearn
+from mlflow.sklearn import log_model 
 import joblib
 import os
 import random
@@ -20,10 +20,9 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # MLflow tracking
 mlflow.set_experiment("mlops-pipeline")
 
-
 with mlflow.start_run():
-    n_estimators = random.choice([50, 100, 150, 200])#PARAMÈTRES VARIÉS
-    max_depth = random.choice([2, 3, 5, 10, None])  # None = pas de limite
+    n_estimators = random.choice([50, 100, 150, 200])
+    max_depth = random.choice([2, 3, 5, 10, None])
     
     print(f"Run avec n_estimators={n_estimators}, max_depth={max_depth}")
 
@@ -39,20 +38,25 @@ with mlflow.start_run():
     predictions = model.predict(X_test)
     accuracy = accuracy_score(y_test, predictions)
 
-    # Logger dans MLflow
+    # Logger dans MLflow (corrections ici)
     mlflow.log_param("n_estimators", n_estimators)
-    mlflow.log_param("max_depth", str(max_depth))  # None → "None"
-    mlflow.log_metric("accuracy", accuracy)
-    mlflow.sklearn.log_model(model, "model")
+    mlflow.log_param("max_depth", str(max_depth))
+    mlflow.log_metric("accuracy", float(accuracy))
+    log_model(model, "model") 
 
-    print(f"Accuracy: {accuracy:.4f}")
-    print(f"Run ID: {mlflow.active_run().info.run_id}")
+    # Run ID (correction ici)
+    run = mlflow.active_run()
+    if run is not None:
+        print(f"Run ID: {run.info.run_id}")
+    else:
+        print("Run ID: non disponible")
 
     # Sauvegarder le modèle
     os.makedirs('models', exist_ok=True)
     joblib.dump(model, 'models/model.pkl')
     print("Modèle sauvegardé dans models/model.pkl")
-    # Sauvegarder les métriques pour DVC (SP-7)
+    
+    # Sauvegarder les métriques pour DVC
     metrics = {
         "accuracy": float(accuracy),
         "n_estimators": n_estimators,

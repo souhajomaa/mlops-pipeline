@@ -1,0 +1,8 @@
+# Ne pas copier dans l'image Docker
+venv/
+__pycache__/
+*.pyc
+.git/
+.gitignore
+mlruns/
+.dvc/
