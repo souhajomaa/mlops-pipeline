@@ -7,6 +7,7 @@ import mlflow.sklearn
 import joblib
 import os
 import random
+import json
 
 # Charger le dataset
 df = pd.read_csv('data/dataset.csv')
@@ -51,3 +52,12 @@ with mlflow.start_run():
     os.makedirs('models', exist_ok=True)
     joblib.dump(model, 'models/model.pkl')
     print("Modèle sauvegardé dans models/model.pkl")
+    # Sauvegarder les métriques pour DVC (SP-7)
+    metrics = {
+        "accuracy": float(accuracy),
+        "n_estimators": n_estimators,
+        "max_depth": str(max_depth)
+    }
+    with open('metrics.json', 'w') as f:
+        json.dump(metrics, f, indent=2)
+    print("Métriques sauvegardées dans metrics.json")

@@ -7,3 +7,12 @@ models/
 mlruns/
 venv/
 /mlruns
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db

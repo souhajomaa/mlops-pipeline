@@ -7,10 +7,12 @@ stages:
       hash: md5
       md5: 21d441a28bce4417276097df955afc50
       size: 2928
+      isexec: true
     - path: src/train.py
       hash: md5
       md5: f2fa3eed9e33b90dac18a208b5520a37
       size: 1895
+      isexec: true
     outs:
     - path: metrics.json
       hash: md5
