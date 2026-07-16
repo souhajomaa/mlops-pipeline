@@ -4,17 +4,15 @@ stages:
     cmd: python src/train.py
     deps:
       - src/train.py
-      - data/dataset.csv
+      - data/diabetes.csv
     outs:
       - models/model.pkl
       - mlruns/
-    metrics:
-      - metrics.json:
-          cache: false
+      - metrics.json
 
   validate:
     cmd: python src/validate.py
     deps:
       - src/validate.py
       - models/model.pkl
-      - data/dataset.csv
+      - data/diabetes.csv

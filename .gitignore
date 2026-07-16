@@ -15,4 +15,6 @@ venv/
 
 # OS
 .DS_Store
-Thumbs.db
+Thumbs.dbdata/diabetes.csv
+data/iris_dataset.csv
+/metrics.json

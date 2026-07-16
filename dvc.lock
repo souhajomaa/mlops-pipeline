@@ -3,42 +3,42 @@ stages:
   train:
     cmd: python src/train.py
     deps:
-    - path: data/dataset.csv
+    - path: data/diabetes.csv
       hash: md5
-      md5: 21d441a28bce4417276097df955afc50
-      size: 2928
-      isexec: true
+      md5: f2906818eda8fcfc8f8416557ab1e6df
+      size: 23873
     - path: src/train.py
       hash: md5
-      md5: f2fa3eed9e33b90dac18a208b5520a37
-      size: 1895
+      md5: c06a252ab5ff5dcea1636e0f357a5267
+      size: 2759
       isexec: true
     outs:
     - path: metrics.json
       hash: md5
-      md5: cbaf942a898c9fa00f3f851591df98d0
-      size: 69
+      md5: 48fdc0d7d01a60cf166db06630ee08d8
+      size: 211
     - path: mlruns/
       hash: md5
-      md5: 54ea55967462a433d8a353e6d8720e57.dir
-      size: 2757344
+      md5: f0aee30d453e86144e6537a7f5980f36.dir
+      size: 3147511
       nfiles: 5
     - path: models/model.pkl
       hash: md5
-      md5: a55b922a75d9e2ff10e5b5632fb2f639
-      size: 280497
+      md5: 903c9001ebaf31176ff5fe9be2921f48
+      size: 659273
   validate:
     cmd: python src/validate.py
     deps:
-    - path: data/dataset.csv
+    - path: data/diabetes.csv
       hash: md5
-      md5: 21d441a28bce4417276097df955afc50
-      size: 2928
+      md5: f2906818eda8fcfc8f8416557ab1e6df
+      size: 23873
     - path: models/model.pkl
       hash: md5
-      md5: a55b922a75d9e2ff10e5b5632fb2f639
-      size: 280497
+      md5: 903c9001ebaf31176ff5fe9be2921f48
+      size: 659273
     - path: src/validate.py
       hash: md5
-      md5: fac068eb89fb0bed64186499724f30d3
-      size: 2153
+      md5: 8b45016eb2709428d38db413ada71e97
+      size: 2077
+      isexec: true
